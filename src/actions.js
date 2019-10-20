@@ -3,7 +3,7 @@ const colors = require('colors')
 const formatter = require('./formatter').formatter
 const argv = process.argv
 const write = require('./formatter').write
-
+const game = require('./game')
 const opsNames = {
 	syn  : 'Synonyms',
 	ant  : 'Antonyms',
@@ -73,12 +73,17 @@ const  dict = ( word = argv[3] ? argv[3] : argv[2] ) => {
 	def(word)
 }
 
+const startGame = () =>  {
+	process.stdin.write('GAME PLAY \n'.bold.inverse)
+	process.stdin.write('Rules : \n\n* Enter the word based on Synonym || Antonyms || Definition\n\n* If you are foul then you can choose any option in ["Try again", "Hint", "Quit"]\n\n* If you choose [* Try again ] again guess the word or if you choose [ * Hint ] you can guess based on hint and you can also quit the game by choosing option 3 \n\n* You can find the answer before you quit\n\nNote : Use keyboard arrows for Menu input and keyboard for text input\n\n'.grey)
+	game()
+}
+
 async function randomWord(){ 
 	let rand = await requestHandler.random()
 	return rand
 }
-const WOD = () => randomWord().then(s => {write(`Word of the day is : ${s.data.id}\n`);dict(s.data.id)}).catch(errorHandler)
+const WOD = () => randomWord().then(s => {write(`Word of the day is : ${s.data.id}\n`.bold.brightYellow);dict(s.data.id)}).catch(errorHandler)
 
 
-
-module.exports = {syn, ant, exp, def, dict, randomWord, WOD}
+module.exports = {syn, ant, exp, def, dict, randomWord, WOD, startGame}

@@ -1,5 +1,16 @@
 const fs = require('fs')
 const actions = require("./src/actions")
+ 
+console.clear()
+console.clear()
+
+try {
+  if (fs.existsSync(path)) {
+   	fs.unlinkSync('std.txt')
+  }
+} catch(err) {
+  //NTG
+}
 
 console.time('\x1b[36mProcessing Time ', 'Processing Time ' ,'\x1b[0m')
 let args = process.argv
@@ -9,7 +20,8 @@ const ops = {
         'ant' : actions.ant,
         'def' : actions.def,
         'ex' : actions.exp,
-        'dict' :  actions.dict
+        'dict' :  actions.dict,
+	'play' : actions.startGame
 }
 
 
@@ -19,6 +31,8 @@ if(args.length === 2){
 else if(args.length === 3){
 	if(!ops[args[2]])
 		ops['dict']()
+	else if(args[2] === 'play')
+		ops['play']()
 }
 else if(args.length === 4){
 	if(ops[args[2]]) {
@@ -29,7 +43,9 @@ else if(args.length === 4){
 	}
 }
 process.on('exit', function(){
-        let data
+        if(args[2] === 'play')
+		return
+	let data
         try
         {
                 data = fs.readFileSync('std.txt')
