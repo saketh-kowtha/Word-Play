@@ -21,7 +21,6 @@ const errorHandler = (type, word) => (err) => {
 	}
 
 	write(((typeof statusMsg[status] === 'function') ? statusMsg[status]() : statusMsg[status]).bold.brightRed);
-	process.exit(0)
 }
 
 const responseHandler = (type, word) => (response) => {

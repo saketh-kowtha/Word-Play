@@ -38,13 +38,15 @@ else if(args.length === 3){
 		ops['dict']()
 	else if(args[2] === 'play')
 		ops['play']()
+	else
+		return	process.stderr.write("Invalid Arguments passed \n")
 }
 else if(args.length === 4){
 	if(ops[args[2]]) {
 		ops[args[2]]() 
 	}
 	else{
- 		process.stdout.write("Invalid Arguments passed \n")
+ 		return process.stderr.write("Invalid Arguments passed \n")
 	}
 }
 
