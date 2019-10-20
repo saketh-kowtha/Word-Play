@@ -1,4 +1,5 @@
 const actions = require('./src/actions')
+
 process.stdout.write('\033c');
 let argsLength = process.argv.length
 
@@ -20,3 +21,5 @@ const ops = {
 	'dict' :  actions.dict
 }
 ops[$]()
+
+

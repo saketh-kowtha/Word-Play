@@ -1,7 +1,8 @@
 const requestHandler = require('./requestHandler')
 const colors = require('colors')
-const formatter = require('./formatter')
+const formatter = require('./formatter').formatter
 const argv = process.argv
+const write = require('./formatter').write
 
 const opsNames = {
 	syn  : 'Synonyms',
@@ -19,40 +20,40 @@ const errorHandler = (type, word) => (err) => {
 		500 : "Internal server error!!!"
 	}
 
-	console.log(((typeof statusMsg[status] === 'function') ? statusMsg[status]() : statusMsg[status]).bold.brightRed);
+	write(((typeof statusMsg[status] === 'function') ? statusMsg[status]() : statusMsg[status]).bold.brightRed);
 	process.exit(0)
 }
 
 const responseHandler = (type, word) => (response) => {
 	let data = (response && response.data) || ""
 	if(!data){
-		console.log(`No Data`)
+		write(`No Data`)
 		process.exit(0)
 	}
-	console.log(` ${opsNames[type]} [ *${word} ] : \n`.bold.inverse)
+	write(` ${opsNames[type]} [ *${word} ] : `.bold.inverse)
 	if(type === 'syn' || type === 'ant'){
 		if(data.length === 0 || (data.words && data.words.length === 0))
-			console.log('No Data')
+			write('No Data')
 		else{
-			console.log(`\n${data[0].words.length} ${opsNames[type]} found for ${word}\n`.italic.green)
+			write(`\n${data[0].words.length} ${opsNames[type]} found for ${word}\n`.italic.green)
 			formatter(data[0].words, 'auto-col') //success
 		}
 	}
 	else if(type === 'def'){
 		if(data.length != 0){
-			console.log(`\n${data.length} ${opsNames[type]} found for ${word}\n`.italic.green)
+			write(`\n${data.length} ${opsNames[type]} found for ${word}\n`.italic.green)
 			formatter(data, opsNames[type]) //success
 		}
 		else
-			console.log("No Data")
+			write("No Data")
 	}
 	else if(type === 'exp'){
 		if(data.examples && data.examples.length != 0){
-			console.log(`\n${data.examples.length} ${opsNames[type]} found for ${word}\n`.italic.green)
+			write(`\n${data.examples.length} ${opsNames[type]} found for ${word}\n`.italic.green)
 			formatter(data.examples, opsNames[type]) //success
 		}
 		else
-			console.log("NO Data")
+			write("NO Data")
 	}
 }
 
@@ -76,7 +77,7 @@ async function randomWord(){
 	let rand = await requestHandler.random()
 	return rand
 }
-const WOD = () => randomWord().then(s => {console.log(`Word of the day is : ${s.data.id}\n`);dict(s.data.id)}).catch(errorHandler)
+const WOD = () => randomWord().then(s => {write(`Word of the day is : ${s.data.id}\n`);dict(s.data.id)}).catch(errorHandler)
 
 
 
