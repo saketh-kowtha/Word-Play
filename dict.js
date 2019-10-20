@@ -2,17 +2,20 @@ const fs = require('fs')
 const actions = require("./src/actions")
  
 console.clear()
-console.clear()
 
+/**
+ * Checking STD file if exist deleting sync at start of the process
+ */
 try {
   if (fs.existsSync(path)) {
    	fs.unlinkSync('std.txt')
   }
 } catch(err) {
-  //NTG
+        //process.stderr
 }
 
 console.time('\x1b[36mProcessing Time ', 'Processing Time ' ,'\x1b[0m')
+
 let args = process.argv
 
 const ops = {
@@ -42,6 +45,12 @@ else if(args.length === 4){
  		process.stdout.write("Invalid Arguments passed \n")
 	}
 }
+
+
+
+/**
+ * Process exit event
+ */
 process.on('exit', function(){
         if(args[2] === 'play')
 		return
@@ -55,6 +64,5 @@ process.on('exit', function(){
                 data = `Problem while reading std file please read std file for output` + e
         }
         process.stdout.write(data.toString() + "\n")
-        //console.timeEnd("Processing Time ")
 	console.timeEnd('\x1b[36mProcessing Time ', 'Processing Time ' ,'\x1b[0m')
 })

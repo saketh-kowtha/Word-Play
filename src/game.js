@@ -1,11 +1,12 @@
-const rand = (n) => (new Date()).getTime() % n
 var inquirer = require('inquirer');
 const colors = require('colors')
 const r = require('./requestHandler')
 
+const rand = (n) => (new Date()).getTime() % n
+
 const ops = [{action: r.syn, name: 'Synonym'}, {action:r.ant, name: 'Antonyms'}, {action: r.def, name: 'Definition'}]
 
-async function getObj(){
+async function getRandomObj(){
 	try{
 		let random = await r.random()
 		let randOps = ops[rand(3)]
@@ -19,13 +20,8 @@ async function getObj(){
 
 
 function start(){
-	getObj().then(d => {
- 		inquirer.prompt({
-    			type: 'input',
-    			name: 'input',
-			color: 'red',
-    			message: `Guess this word based on ${d.name} [*${d.ques}] : `
-  		}).then(ans => validate(d.ans, ans.input))
+	getRandomObj().then(d => {
+		inquirer.prompt(inquirerInput(`Guess this word based on ${d.name} [*${d.ques}] : `)).then(ans => validate(d.ans, ans.input))
 	}).catch(e => console.log(e))
 }
 
@@ -45,23 +41,22 @@ const validate = (ans, ip) => {
 				process.exit(0)
 			}
 			else if(answer.option.indexOf('2') > -1){
-				inquirer.prompt({
-                			type: 'input',
-                			name: 'input',
-                			message: `Hint [* ${ans.shuffle()}] : `
-        			}).then(answer => validate(ans, answer.input))
+				inquirer.prompt(inquirerInput(`Hint [* ${ans.shuffle()}] :`)).then(answer => validate(ans, answer.input))
 			}
 			else{
-				inquirer.prompt({
-                			type: 'input',
-                			name: 'input',
-                			message: `\n\nPlease enter the word : `
-        			}).then(answer => validate(ans, answer.input))	
+				inquirer.prompt(inquirerInput(`\n\nPlease enter the word : `)).then(answer => validate(ans, answer.input))	
 			}
   		});
 	}
 }
-
+ 
+const inquirerInput = (label) => {
+	return {
+		type: 'input',
+		name: 'input',
+		message: label
+	}
+}
 
 String.prototype.shuffle = function () {
     var a = this.split(""),

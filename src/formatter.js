@@ -21,6 +21,4 @@ const formatter = (data, type) => {
 
 const write = (data) => fs.appendFileSync('std.txt', data + "\n")
 
-//const write = (data) => console.log(data)
-
 module.exports = {formatter, write}
