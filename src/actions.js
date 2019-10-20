@@ -30,7 +30,7 @@ const responseHandler = (type, word) => (response) => {
 		write(`No Data`)
 		process.exit(0)
 	}
-	write(` ${opsNames[type]} [ *${word} ] : `.bold.inverse)
+	write(`\n ${opsNames[type]} [ *${word} ] : `.bold.inverse)
 	if(type === 'syn' || type === 'ant'){
 		if(data.length === 0 || (data.words && data.words.length === 0))
 			write('No Data')

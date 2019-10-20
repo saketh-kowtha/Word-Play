@@ -1,7 +1,9 @@
 const fs = require('fs')
 const actions = require("./src/actions")
- 
+const os = require('os')
+
 console.clear()
+console.log(`Hello ${os.userInfo().username}!!!\n`)
 
 /**
  * Checking STD file if exist deleting sync at start of the process
